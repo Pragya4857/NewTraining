@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TrainReservationDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Admin_Details">
+    <Key>
+      <PropertyRef Name="Admin-id" />
+    </Key>
+    <Property Name="Admin-id" Type="numeric" Precision="3" Scale="0" Nullable="false" />
+    <Property Name="Admin-Name" Type="varchar" MaxLength="35" />
+    <Property Name="passcode" Type="varchar" MaxLength="30" />
+  </EntityType>
+  <EntityType Name="BookedTicket">
+    <Key>
+      <PropertyRef Name="BookingId" />
+    </Key>
+    <Property Name="BookingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+    <Property Name="TrainNumber" Type="int" />
+    <Property Name="class" Type="nvarchar" MaxLength="50" />
+    <Property Name="numberofberths" Type="int" />
+    <Property Name="BookingDate" Type="datetime" />
+    <Property Name="TotalAmt" Type="int" />
+  </EntityType>
+  <EntityType Name="fare">
+    <Key>
+      <PropertyRef Name="train_class_id" />
+    </Key>
+    <Property Name="train_class_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainNumber" Type="int" />
+    <Property Name="first_ac" Type="int" />
+    <Property Name="second_ac" Type="int" />
+    <Property Name="sleeper" Type="int" />
+  </EntityType>
+  <EntityType Name="train_classes">
+    <Key>
+      <PropertyRef Name="train_class_id" />
+    </Key>
+    <Property Name="train_class_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TrainNumber" Type="int" />
+    <Property Name="first_ac" Type="int" />
+    <Property Name="second_ac" Type="int" />
+    <Property Name="sleeper" Type="int" />
+  </EntityType>
+  <EntityType Name="Trains">
+    <Key>
+      <PropertyRef Name="TrainNumber" />
+    </Key>
+    <Property Name="TrainNumber" Type="int" Nullable="false" />
+    <Property Name="TrainName" Type="nvarchar" MaxLength="30" />
+    <Property Name="Source" Type="nvarchar" MaxLength="30" />
+    <Property Name="Destination" Type="nvarchar" MaxLength="30" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="User_details">
+    <Key>
+      <PropertyRef Name="User-id" />
+    </Key>
+    <Property Name="User-id" Type="numeric" Precision="3" Scale="0" Nullable="false" />
+    <Property Name="User-Name" Type="varchar" MaxLength="30" />
+    <Property Name="Age" Type="int" />
+  </EntityType>
+  <Association Name="FK__BookedTic__Train__1AD3FDA4">
+    <End Role="Trains" Type="Self.Trains" Multiplicity="0..1" />
+    <End Role="BookedTicket" Type="Self.BookedTicket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trains">
+        <PropertyRef Name="TrainNumber" />
+      </Principal>
+      <Dependent Role="BookedTicket">
+        <PropertyRef Name="TrainNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__fare__TrainNumbe__412EB0B6">
+    <End Role="Trains" Type="Self.Trains" Multiplicity="0..1" />
+    <End Role="fare" Type="Self.fare" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trains">
+        <PropertyRef Name="TrainNumber" />
+      </Principal>
+      <Dependent Role="fare">
+        <PropertyRef Name="TrainNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__train_cla__Train__3E52440B">
+    <End Role="Trains" Type="Self.Trains" Multiplicity="0..1" />
+    <End Role="train_classes" Type="Self.train_classes" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trains">
+        <PropertyRef Name="TrainNumber" />
+      </Principal>
+      <Dependent Role="train_classes">
+        <PropertyRef Name="TrainNumber" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="AddTrain" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="TrainNumber" Type="int" Mode="In" />
+    <Parameter Name="TrainName" Type="nvarchar" Mode="In" />
+    <Parameter Name="Source" Type="nvarchar" Mode="In" />
+    <Parameter Name="Destination" Type="nvarchar" Mode="In" />
+    <Parameter Name="IsActive" Type="bit" Mode="In" />
+  </Function>
+  <EntityContainer Name="TrainReservationDBModelStoreContainer">
+    <EntitySet Name="Admin_Details" EntityType="Self.Admin_Details" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="BookedTicket" EntityType="Self.BookedTicket" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="fare" EntityType="Self.fare" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="train_classes" EntityType="Self.train_classes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Trains" EntityType="Self.Trains" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_details" EntityType="Self.User_details" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__BookedTic__Train__1AD3FDA4" Association="Self.FK__BookedTic__Train__1AD3FDA4">
+      <End Role="Trains" EntitySet="Trains" />
+      <End Role="BookedTicket" EntitySet="BookedTicket" />
+    </AssociationSet>
+    <AssociationSet Name="FK__fare__TrainNumbe__412EB0B6" Association="Self.FK__fare__TrainNumbe__412EB0B6">
+      <End Role="Trains" EntitySet="Trains" />
+      <End Role="fare" EntitySet="fare" />
+    </AssociationSet>
+    <AssociationSet Name="FK__train_cla__Train__3E52440B" Association="Self.FK__train_cla__Train__3E52440B">
+      <End Role="Trains" EntitySet="Trains" />
+      <End Role="train_classes" EntitySet="train_classes" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

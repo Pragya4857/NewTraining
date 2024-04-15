@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TrainReservationDBModelStoreContainer" CdmEntityContainer="TrainReservationDBEntities">
+    <EntitySetMapping Name="BookedTickets">
+      <EntityTypeMapping TypeName="TrainReservationDBModel.BookedTicket">
+        <MappingFragment StoreEntitySet="BookedTicket">
+          <ScalarProperty Name="numberofberths" ColumnName="numberofberths" />
+          <ScalarProperty Name="class" ColumnName="class" />
+          <ScalarProperty Name="TotalAmt" ColumnName="TotalAmt" />
+          <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="TrainNumber" ColumnName="TrainNumber" />
+          <ScalarProperty Name="BookingDate" ColumnName="BookingDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="fares">
+      <EntityTypeMapping TypeName="TrainReservationDBModel.fare">
+        <MappingFragment StoreEntitySet="fare">
+          <ScalarProperty Name="train_class_id" ColumnName="train_class_id" />
+          <ScalarProperty Name="TrainNumber" ColumnName="TrainNumber" />
+          <ScalarProperty Name="first_ac" ColumnName="first_ac" />
+          <ScalarProperty Name="second_ac" ColumnName="second_ac" />
+          <ScalarProperty Name="sleeper" ColumnName="sleeper" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="train_classes">
+      <EntityTypeMapping TypeName="TrainReservationDBModel.train_classes">
+        <MappingFragment StoreEntitySet="train_classes">
+          <ScalarProperty Name="train_class_id" ColumnName="train_class_id" />
+          <ScalarProperty Name="TrainNumber" ColumnName="TrainNumber" />
+          <ScalarProperty Name="first_ac" ColumnName="first_ac" />
+          <ScalarProperty Name="second_ac" ColumnName="second_ac" />
+          <ScalarProperty Name="sleeper" ColumnName="sleeper" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trains">
+      <EntityTypeMapping TypeName="TrainReservationDBModel.Train">
+        <MappingFragment StoreEntitySet="Trains">
+          <ScalarProperty Name="TrainNumber" ColumnName="TrainNumber" />
+          <ScalarProperty Name="TrainName" ColumnName="TrainName" />
+          <ScalarProperty Name="Source" ColumnName="Source" />
+          <ScalarProperty Name="Destination" ColumnName="Destination" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="AddTrain" FunctionName="TrainReservationDBModel.Store.AddTrain" />
+    <EntitySetMapping Name="Admin_Details">
+      <EntityTypeMapping TypeName="TrainReservationDBModel.Admin_Details">
+        <MappingFragment StoreEntitySet="Admin_Details">
+          <ScalarProperty Name="passcode" ColumnName="passcode" />
+          <ScalarProperty Name="Admin_Name" ColumnName="Admin-Name" />
+          <ScalarProperty Name="Admin_id" ColumnName="Admin-id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="User_details">
+      <EntityTypeMapping TypeName="TrainReservationDBModel.User_details">
+        <MappingFragment StoreEntitySet="User_details">
+          <ScalarProperty Name="Age" ColumnName="Age" />
+          <ScalarProperty Name="User_Name" ColumnName="User-Name" />
+          <ScalarProperty Name="User_id" ColumnName="User-id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
