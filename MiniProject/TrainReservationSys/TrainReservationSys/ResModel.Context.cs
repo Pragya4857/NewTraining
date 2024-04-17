@@ -94,21 +94,21 @@ namespace TrainReservationSys
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MgTbl_tclasses", trainNoParameter, classParameter, nosParameter);
         }
     
-        public virtual int MgTbl_tclassesCan(Nullable<int> trainNo, string @class, Nullable<int> nos)
+        public virtual int MgTbl_tclassesCan(Nullable<int> trainNumber, string @class, Nullable<int> ticketsToCancel)
         {
-            var trainNoParameter = trainNo.HasValue ?
-                new ObjectParameter("TrainNo", trainNo) :
-                new ObjectParameter("TrainNo", typeof(int));
+            var trainNumberParameter = trainNumber.HasValue ?
+                new ObjectParameter("TrainNumber", trainNumber) :
+                new ObjectParameter("TrainNumber", typeof(int));
     
             var classParameter = @class != null ?
                 new ObjectParameter("Class", @class) :
                 new ObjectParameter("Class", typeof(string));
     
-            var nosParameter = nos.HasValue ?
-                new ObjectParameter("nos", nos) :
-                new ObjectParameter("nos", typeof(int));
+            var ticketsToCancelParameter = ticketsToCancel.HasValue ?
+                new ObjectParameter("TicketsToCancel", ticketsToCancel) :
+                new ObjectParameter("TicketsToCancel", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MgTbl_tclassesCan", trainNoParameter, classParameter, nosParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MgTbl_tclassesCan", trainNumberParameter, classParameter, ticketsToCancelParameter);
         }
     }
 }

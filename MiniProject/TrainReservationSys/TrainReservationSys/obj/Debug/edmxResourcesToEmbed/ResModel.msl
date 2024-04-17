@@ -13,6 +13,7 @@
     <EntitySetMapping Name="BookedTickets">
       <EntityTypeMapping TypeName="TrainReservationDBModel.BookedTicket">
         <MappingFragment StoreEntitySet="BookedTicket">
+          <ScalarProperty Name="RefundedAmount" ColumnName="RefundedAmount" />
           <ScalarProperty Name="BookingId" ColumnName="BookingId" />
           <ScalarProperty Name="UserName" ColumnName="UserName" />
           <ScalarProperty Name="TrainNumber" ColumnName="TrainNumber" />

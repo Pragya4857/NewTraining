@@ -29,23 +29,38 @@ namespace TrainReservationSys.Admin
                 Console.WriteLine("Enter Train Number to update:");
                 int trainNumber = int.Parse(Console.ReadLine());
 
-                Console.WriteLine("Enter New Source:");
-                string newSource = Console.ReadLine();
-
-                Console.WriteLine("Enter New Destination:");
-                string newDestination = Console.ReadLine();
-
-                Console.WriteLine("Enter New Active Status (True/False):");
-                bool newActiveStatus;
-                if (!bool.TryParse(Console.ReadLine(), out newActiveStatus))
-                {
-                    Console.WriteLine("Invalid input for active status. Please enter 'True' or 'False'.");
-                    return;
-                }
-
                 var train = db.Trains.FirstOrDefault(t => t.TrainNumber == trainNumber);
                 if (train != null)
                 {
+                    if (train.IsActive == null || train.IsActive == false)
+                    {
+                        Console.WriteLine("Train is inactive. Do you want to activate it? (yes/no)");
+                        string activateChoice = Console.ReadLine().ToLower();
+                        if (activateChoice == "yes")
+                        {
+                            ActivateTrain(trainNumber);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Train not activated. Returning to the admin menu.");
+                            return;
+                        }
+                    }
+
+                    Console.WriteLine("Enter New Source:");
+                    string newSource = Console.ReadLine();
+
+                    Console.WriteLine("Enter New Destination:");
+                    string newDestination = Console.ReadLine();
+
+                    Console.WriteLine("Enter New Active Status (True/False):");
+                    bool newActiveStatus;
+                    if (!bool.TryParse(Console.ReadLine(), out newActiveStatus))
+                    {
+                        Console.WriteLine("Invalid input for active status. Please enter 'True' or 'False'.");
+                        return;
+                    }
+
                     train.Source = newSource;
                     train.Destination = newDestination;
                     train.IsActive = newActiveStatus;
@@ -64,7 +79,6 @@ namespace TrainReservationSys.Admin
             }
         }
 
-
         public static void deleteTrain()
         {
             showTrains();
@@ -76,6 +90,21 @@ namespace TrainReservationSys.Admin
                 var train = db.Trains.FirstOrDefault(t => t.TrainNumber == trainNumber);
                 if (train != null)
                 {
+                    if (train.IsActive == null || train.IsActive == false)
+                    {
+                        Console.WriteLine("Train is inactive. Do you want to activate it before deletion? (yes/no)");
+                        string activateChoice = Console.ReadLine().ToLower();
+                        if (activateChoice == "yes")
+                        {
+                            ActivateTrain(trainNumber);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Train not activated. Returning to the admin menu.");
+                            return;
+                        }
+                    }
+
                     train.IsActive = false; // Soft-delete by setting IsActive to false
                     db.SaveChanges();
                     Console.WriteLine("Train deleted successfully.");
@@ -125,70 +154,60 @@ namespace TrainReservationSys.Admin
         {
             try
             {
-                Console.WriteLine($"Updating fares and seats for Train Number: {trainNumber}");
-
                 var train = db.Trains.FirstOrDefault(t => t.TrainNumber == trainNumber);
                 if (train != null)
                 {
-                    Console.WriteLine("Current Fares and Seats:");
-                    ShowFaresAndSeats(trainNumber);
-
-                    Console.WriteLine("Enter new fare for First Class (AC):");
-                    int newFirstClassFare = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Enter new fare for Second Class (AC):");
-                    int newSecondClassFare = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Enter new fare for Sleeper Class:");
-                    int newSleeperFare = int.Parse(Console.ReadLine());
-
-                    Console.WriteLine("Enter new number of seats for First Class (AC):");
-                    int newFirstClassSeats = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Enter new number of seats for Second Class (AC):");
-                    int newSecondClassSeats = int.Parse(Console.ReadLine());
-                    Console.WriteLine("Enter new number of seats for Sleeper Class:");
-                    int newSleeperSeats = int.Parse(Console.ReadLine());
-
-                    var fare = db.fares.FirstOrDefault(f => f.TrainNumber == trainNumber);
-                    if (fare != null)
+                    if (train.IsActive == null || train.IsActive == false)
                     {
-                        fare.first_ac = newFirstClassFare;
-                        fare.second_ac = newSecondClassFare;
-                        fare.sleeper = newSleeperFare;
-                    }
-                    else
-                    {
-                        // Create new fare entry if not exists
-                        fare = new fare
+                        Console.WriteLine("Train is inactive. Do you want to activate it? (yes/no)");
+                        string activateChoice = Console.ReadLine().ToLower();
+                        if (activateChoice == "yes")
                         {
-                            TrainNumber = trainNumber,
-                            first_ac = newFirstClassFare,
-                            second_ac = newSecondClassFare,
-                            sleeper = newSleeperFare
-                        };
+                            ActivateTrain(trainNumber);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Train not activated. Returning to the admin menu.");
+                            return;
+                        }
+                    }
+
+                    Console.WriteLine($"Updating fares and seats for Train Number: {trainNumber}");
+
+                    // Retrieve existing fare and seat information
+                    var fare = db.fares.FirstOrDefault(f => f.TrainNumber == trainNumber);
+                    var classes = db.train_classes.FirstOrDefault(s => s.TrainNumber == trainNumber);
+
+                    // If fare and seat information doesn't exist, create new entries
+                    if (fare == null)
+                    {
+                        fare = new fare { TrainNumber = trainNumber };
                         db.fares.Add(fare);
                     }
-
-                    var classes = db.train_classes.FirstOrDefault(s => s.TrainNumber == trainNumber);
-                    if (classes != null)
+                    if (classes == null)
                     {
-                        classes.first_ac = newFirstClassSeats;
-                        classes.second_ac = newSecondClassSeats;
-                        classes.sleeper = newSleeperSeats;
-                    }
-                    else
-                    {
-                        // Create new seat entry if not exists
-                        classes = new train_classes
-                        {
-                            TrainNumber = trainNumber,
-                            first_ac = newFirstClassSeats,
-                            second_ac = newSecondClassSeats,
-                            sleeper = newSleeperSeats
-                        };
+                        classes = new train_classes { TrainNumber = trainNumber };
                         db.train_classes.Add(classes);
                     }
 
+                    // Prompt user for new fare and seat information
+                    Console.WriteLine("Enter new fare for First Class (AC):");
+                    fare.first_ac = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter new fare for Second Class (AC):");
+                    fare.second_ac = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter new fare for Sleeper Class:");
+                    fare.sleeper = int.Parse(Console.ReadLine());
+
+                    Console.WriteLine("Enter new number of seats for First Class (AC):");
+                    classes.first_ac = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter new number of seats for Second Class (AC):");
+                    classes.second_ac = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter new number of seats for Sleeper Class:");
+                    classes.sleeper = int.Parse(Console.ReadLine());
+
+                    // Save changes to the database
                     db.SaveChanges();
-                    Console.WriteLine("Fares and Seats updated successfully.");
+                    Console.WriteLine("Fares and seats updated successfully.");
                 }
                 else
                 {
@@ -200,6 +219,8 @@ namespace TrainReservationSys.Admin
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
+
+
 
         public static void ShowFaresAndSeats(int trainNumber)
         {
@@ -216,6 +237,28 @@ namespace TrainReservationSys.Admin
             else
             {
                 Console.WriteLine("Fares and Seats not available for this train.");
+            }
+        }
+
+        public static void ActivateTrain(int trainNumber)
+        {
+            try
+            {
+                var train = db.Trains.FirstOrDefault(t => t.TrainNumber == trainNumber);
+                if (train != null)
+                {
+                    train.IsActive = true; // Set the IsActive property to true to activate the train
+                    db.SaveChanges();
+                    Console.WriteLine("Train activated successfully.");
+                }
+                else
+                {
+                    Console.WriteLine("Train not found.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
             }
         }
     }

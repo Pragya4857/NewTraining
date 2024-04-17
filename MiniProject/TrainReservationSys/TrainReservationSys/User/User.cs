@@ -22,8 +22,9 @@ namespace TrainReservationSys.User
 
                 Console.WriteLine($"| {train.TrainNumber,-13} | {train.TrainName,-23} | {train.Source,-10} | {train.Destination,-12} | {train.IsActive,-8} |");
                 Console.WriteLine("----------------------------------------------------------------------------------------------------------");
-                ShowTrainClasses(train.TrainNumber);
+               
             }
+
 
 
             
@@ -32,9 +33,25 @@ namespace TrainReservationSys.User
         public static void BookTicket(string username, int trainNumber)
         {
             Console.WriteLine("\n----------------------------------------------");
-            Console.WriteLine("             Book Ticket             ");
-            Console.WriteLine("------------------------------------------------");
+            Console.WriteLine("             Ticket Booking Portal            ");
+            Console.WriteLine("----------------------------------------------");
+
+            // Check if the train exists and is active
+            var train = db.Trains.FirstOrDefault(t => t.TrainNumber == trainNumber);
+
+            if (train == null)
+            {
+                Console.WriteLine("Invalid train number. Cannot book tickets.");
+                return;
+            }
+            else if (!(train?.IsActive ?? false))
+            {
+                Console.WriteLine("Train is not active. Cannot book tickets.");
+                return;
+            }
+
             ShowFares(trainNumber);
+            ShowTrainClasses(trainNumber);
 
             BookedTicket bt = new BookedTicket();
 
@@ -69,7 +86,7 @@ namespace TrainReservationSys.User
             // Display booked ticket details
             Console.WriteLine("\n-----------------------------------------------");
             Console.WriteLine("          Ticket Booked Successfully            ");
-            Console.WriteLine("-------------------------------------------------");
+            Console.WriteLine("-----------------------------------------------");
             Console.WriteLine("\nHere's Your Ticket Details");
             Console.WriteLine($"Booking ID: {bid}");
             Console.WriteLine($"Train Number: {bt.TrainNumber}");
@@ -79,38 +96,75 @@ namespace TrainReservationSys.User
             Console.WriteLine($"Total Fare: {bt.TotalAmt}");
             Console.WriteLine($"Booking Date: {bt.BookingDate}");
         }
-        
-       
 
-        public static void CancelTicket(int bookingId)
+
+
+        public static void CancelTicket(int bookingId, int ticketsToCancel)
         {
             Console.WriteLine("\n------------------------------------------------");
-            Console.WriteLine("            Cancel Ticket             ");
-            Console.WriteLine("--------------------------------------------------");
+            Console.WriteLine("            Cancel Ticket Portal           ");
+            Console.WriteLine("------------------------------------------------");
 
             var ticketToDelete = db.BookedTickets.FirstOrDefault(t => t.BookingId == bookingId);
 
             if (ticketToDelete != null)
             {
+                // Check if the number of tickets to cancel is valid
+                if (ticketsToCancel <= 0 || ticketsToCancel > ticketToDelete.numberofberths)
+                {
+                    Console.WriteLine("Invalid number of tickets to cancel.");
+                    return;
+                }
+
                 int tno = (int)db.BookedTickets.Where(b => b.BookingId == bookingId).Select(ct => ct.TrainNumber).FirstOrDefault();
                 string cls = (string)db.BookedTickets.Where(b => b.BookingId == bookingId).Select(ct => ct.@class).FirstOrDefault();
-                int nos = (int)db.BookedTickets.Where(b => b.BookingId == bookingId).Select(ct => ct.numberofberths).FirstOrDefault();
+                int refundAmount = CalculateRefund(ticketToDelete.TotalAmt ?? 0, ticketsToCancel);
 
-                db.BookedTickets.Remove(ticketToDelete);
-                db.SaveChanges();
+               
+
+              
+                ticketToDelete.numberofberths -= ticketsToCancel;
+
                 
-                Console.WriteLine("Ticket canceled successfully.");
-                db.MgTbl_tclassesCan(tno, cls, nos);
-                Console.ReadLine();
+                if (ticketToDelete.numberofberths <= 0)
+                {
+                    db.BookedTickets.Remove(ticketToDelete);
+                    Console.WriteLine("All tickets canceled successfully.");
+                }
+                else
+                {
+                    
+                    Console.WriteLine($"{ticketsToCancel} ticket(s) canceled successfully. {ticketToDelete.numberofberths} ticket(s) remaining.");
+                }
+
+              
+                Console.WriteLine($"Refund Amount: {refundAmount}");
+              
+                ticketToDelete.RefundedAmount = refundAmount;
+
+                db.SaveChanges();
+
+             
+                db.MgTbl_tclassesCan(tno, cls, ticketsToCancel);
             }
             else
             {
-                Console.WriteLine("Ticket not found");
-                Console.ReadLine();
+                Console.WriteLine("Invalid booking ID. No ticket found.");
             }
 
-
+            Console.ReadLine();
         }
+
+        // Method to calculate the refund amount
+        public static int CalculateRefund(int totalAmount, int ticketsToCancel)
+        {
+            //refunding 80% of the total amount per canceled ticket
+            double refundPercentage = 0.8;
+            double refundAmountPerTicket = totalAmount * refundPercentage / ticketsToCancel;
+            return (int)Math.Round(refundAmountPerTicket);
+        }
+
+
         public static void ShowTickets(string userName)
         {
             var userTickets = db.BookedTickets.Where(t => t.UserName == userName).ToList();
@@ -148,7 +202,7 @@ namespace TrainReservationSys.User
                 Console.WriteLine($"First Class (AC): {fare.first_ac}");
                 Console.WriteLine($"Second Class (AC): {fare.second_ac}");
                 Console.WriteLine($"Sleeper Class: {fare.sleeper}");
-                Console.WriteLine("------------------------------------------------------------------------\n");
+                Console.WriteLine("----------------------------------------------------------------------\n");
             }
             else
             {

@@ -21,6 +21,7 @@ namespace TrainReservationSys
         public Nullable<int> numberofberths { get; set; }
         public Nullable<System.DateTime> BookingDate { get; set; }
         public Nullable<int> TotalAmt { get; set; }
+        public Nullable<int> RefundedAmount { get; set; }
     
         public virtual Train Train { get; set; }
     }

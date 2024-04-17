@@ -24,6 +24,7 @@
           <Property Name="numberofberths" Type="int" />
           <Property Name="BookingDate" Type="datetime" />
           <Property Name="TotalAmt" Type="int" />
+          <Property Name="RefundedAmount" Type="int" />
         </EntityType>
         <EntityType Name="fare">
           <Key>
@@ -118,9 +119,9 @@
           <Parameter Name="nos" Type="int" Mode="In" />
         </Function>
         <Function Name="MgTbl_tclassesCan" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="TrainNo" Type="int" Mode="In" />
-          <Parameter Name="Class" Type="varchar" Mode="In" />
-          <Parameter Name="nos" Type="int" Mode="In" />
+          <Parameter Name="TrainNumber" Type="int" Mode="In" />
+          <Parameter Name="Class" Type="nvarchar" Mode="In" />
+          <Parameter Name="TicketsToCancel" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="TrainReservationDBModelStoreContainer">
           <EntitySet Name="Admin_Details" EntityType="Self.Admin_Details" Schema="dbo" store:Type="Tables" />
@@ -166,6 +167,7 @@
           <Property Name="BookingDate" Type="DateTime" Precision="3" />
           <Property Name="TotalAmt" Type="Int32" />
           <NavigationProperty Name="Train" Relationship="Self.FK__BookedTic__Train__1AD3FDA4" FromRole="BookedTicket" ToRole="Trains" />
+          <Property Name="RefundedAmount" Type="Int32" />
         </EntityType>
         <EntityType Name="fare">
           <Key>
@@ -284,9 +286,9 @@
             <Parameter Name="nos" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="MgTbl_tclassesCan">
-            <Parameter Name="TrainNo" Mode="In" Type="Int32" />
+            <Parameter Name="TrainNumber" Mode="In" Type="Int32" />
             <Parameter Name="Class" Mode="In" Type="String" />
-            <Parameter Name="nos" Mode="In" Type="Int32" />
+            <Parameter Name="TicketsToCancel" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="GetBookingHistory_Result">
@@ -316,6 +318,7 @@
           <EntitySetMapping Name="BookedTickets">
             <EntityTypeMapping TypeName="TrainReservationDBModel.BookedTicket">
               <MappingFragment StoreEntitySet="BookedTicket">
+                <ScalarProperty Name="RefundedAmount" ColumnName="RefundedAmount" />
                 <ScalarProperty Name="BookingId" ColumnName="BookingId" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="TrainNumber" ColumnName="TrainNumber" />
