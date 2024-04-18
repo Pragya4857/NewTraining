@@ -1,89 +1,10 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Result</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            max-width: 600px;
-            width: 100%;
-            text-align: center;
-        }
-
-        h1 {
-            color: #4CAF50;
-        }
-
-        p {
-            margin-bottom: 10px;
-        }
-
-        span {
-            font-weight: bold;
-        }
-    </style>
+    <meta charset="utf-8" />
+    <title></title>
 </head>
 <body>
-    <div class="container">
-        <h1>Validation Successful</h1>
-        <div id="details">
-            <p>Name: <span id="name"></span></p>
-            <p>Family Name: <span id="familyName"></span></p>
-            <p>Address: <span id="address"></span></p>
-            <p>City: <span id="city"></span></p>
-            <p>Zip Code: <span id="zipCode"></span></p>
-            <p>Phone: <span id="phone"></span></p>
-            <p>Email: <span id="email"></span></p>
-        </div>
-    </div>
 
-    <script>
-        // Function to parse query parameters from URL
-        function getQueryVariable(variable) {
-            var query = window.location.search.substring(1);
-            var vars = query.split("&");
-            for (var i = 0; i < vars.length; i++) {
-                var pair = vars[i].split("=");
-                if (pair[0] === variable) {
-                    return decodeURIComponent(pair[1]);
-                }
-            }
-            return null;
-        }
-
-        // Get query parameters and display them
-        var name = getQueryVariable("name");
-        var familyName = getQueryVariable("familyName");
-        var address = getQueryVariable("address");
-        var city = getQueryVariable("city");
-        var zipCode = getQueryVariable("zipCode");
-        var phone = getQueryVariable("phone");
-        var email = getQueryVariable("email");
-
-        // Display details in HTML elements
-        document.getElementById("name").innerText = name;
-        document.getElementById("familyName").innerText = familyName;
-        document.getElementById("address").innerText = address;
-        document.getElementById("city").innerText = city;
-        document.getElementById("zipCode").innerText = zipCode;
-        document.getElementById("phone").innerText = phone;
-        document.getElementById("email").innerText = email;
-    </script>
 </body>
 </html>
