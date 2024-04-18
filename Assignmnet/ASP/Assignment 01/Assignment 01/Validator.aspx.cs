@@ -10,23 +10,6 @@ namespace Assignment_01
 
         }
 
-        protected void CustomValidator1_ServerValidate(object source, System.Web.UI.WebControls.ServerValidateEventArgs args)
-        {
-            string familyName = familyNameInput.Text;
-            string name = nameInput.Text;
-
-            if (familyName.Equals(name, StringComparison.OrdinalIgnoreCase))
-            {
-                // If the family name is the same as the name, validation fails
-                args.IsValid = false;
-            }
-            else
-            {
-                // If the family name differs from the name, validation succeeds
-                args.IsValid = true;
-            }
-        }
-
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             if (IsValid)
