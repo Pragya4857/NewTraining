@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini Calculator</title>
+</head>
+<body>
+    <h2>Enter two numbers:</h2>
+    <input type="number" id="firstNumber" placeholder="Enter first number"><br><br>
+    <input type="number" id="secondNumber" placeholder="Enter second number"><br><br>
+
+    <button onclick="multiplyNumbers()">Multiply</button>
+    <button onclick="divideNumbers()">Divide</button><br><br>
+
+    <div id="result"></div>
+
+    <script>
+        function multiplyNumbers() {
+            var firstNumber = document.getElementById("firstNumber").value;
+            var secondNumber = document.getElementById("secondNumber").value;
+            var result = firstNumber * secondNumber;
+            document.getElementById("result").innerHTML= "Multiplication result: " + result;
+        }
+
+        function divideNumbers() {
+            var firstNumber = document.getElementById("firstNumber").value;
+            var secondNumber = document.getElementById("secondNumber").value;
+            if (secondNumber !== "0") {
+                var result = firstNumber / secondNumber;
+                document.getElementById("result").innerHTML = "Division result: " + result;
+            } else {
+                document.getElementById("result").innerHTML = "Cannot divide by zero!";
+            }
+        }
+    </script>
+</body>
+</html>
