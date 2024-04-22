@@ -1,18 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Even/Odd Number</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .result {
+            margin-top: 20px;
+            border-top: 2px solid #ccc;
+            padding-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Even/Odd Number</h2>
-    <script>
-        for (var i = 0; i <= 15; i++) {
-            if (i % 2 === 0) {
-                document.write(i + " is even<br>");
-            } else {
-                document.write(i + " is odd<br>");
-            }
-        }
-    </script>
+    <div class="container">
+        <h2>Even/Odd Number</h2>
+        <div class="result">
+            <script>
+                for (var i = 0; i <= 15; i++) {
+                    if (i % 2 === 0) {
+                        document.write('<p>' + i + ' is even</p>');
+                    } else {
+                        document.write('<p>' + i + ' is odd</p>');
+                    }
+                }
+            </script>
+        </div>
+    </div>
 </body>
 </html>
