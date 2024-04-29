@@ -22,7 +22,7 @@ namespace Assessment_1_ques2.Controllers
             return View(movies);
         }
 
-        // GET: Movies/Details/5
+        // GET: Movies/Details
         public ActionResult Details(int id)
         {
             var movie = movieRepository.GetMovieById(id);
@@ -53,7 +53,7 @@ namespace Assessment_1_ques2.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Movies/Edit
         public ActionResult Edit(int id)
         {
             var movie = movieRepository.GetMovieById(id);
@@ -64,7 +64,7 @@ namespace Assessment_1_ques2.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Movies/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Mid,Moviename,DateofRelease")] Movie movie)
@@ -77,7 +77,7 @@ namespace Assessment_1_ques2.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Movies/Delete
         public ActionResult Delete(int id)
         {
             var movie = movieRepository.GetMovieById(id);
@@ -88,7 +88,7 @@ namespace Assessment_1_ques2.Controllers
             return View(movie);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Movies/Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
