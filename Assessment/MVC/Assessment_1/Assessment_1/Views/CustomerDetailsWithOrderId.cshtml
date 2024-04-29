@@ -1,0 +1,19 @@
+﻿--@model Assessment_1.Models.Customer
+
+@{ ViewBag.Title = "Customer Details with Order ID"; }
+
+<h2>Customer Details with Order ID</h2>
+
+@if (Model != null)
+{
+<div>
+    <h4>Order ID: 10248</h4>
+    <h6>Customer ID: @Model.CustomerID</h6>
+    <h6>Company Name: @Model.CompanyName</h6>
+    <h6>Contact Name: @Model.ContactName</h6>
+    <h6>Country Name: @Model.Country</h6>
+</div> }
+            else
+            {
+<p>No customer found with order id "10248"</p>}
+}
